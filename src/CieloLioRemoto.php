@@ -15,14 +15,10 @@ class CieloLioRemoto
     private $client;
     protected $optionsRequest = [];
 
-    function __construct(array $config, $sandbox = false)
+    function __construct(array $config)
     {
-        $url = 'https://api.cielo.com.br/order-management/v1';
-        if ($sandbox) {
-            $url = 'https://api.cielo.com.br/sandbox-lio/order-management/v1';
-        }
         $this->client = new Client([
-            'base_uri' => $url,
+            'base_uri' => 'https://api.cielo.com.br',
         ]);
 
         $this->optionsRequest = [
@@ -31,6 +27,7 @@ class CieloLioRemoto
                 'client-id' => $config['client-id'],
                 'access-token' => $config['access-token'],
                 'merchant-id' => $config['merchant-id'],
+                'Content-Type' => 'application/json',
             ],
         ];
     }
@@ -38,14 +35,14 @@ class CieloLioRemoto
     ##############################################
     ######## ORDEM ###############################
     ##############################################
-    public function criarPedido($filter)
+    public function criarOrdem($filter)
     {
         $options = $this->optionsRequest;
         $options['body'] = json_encode($filter);
         try {
             $response = $this->client->request(
                 'POST',
-                "/orders",
+                "/order-management/v1/orders",
                 $options
             );
             $statusCode = $response->getStatusCode();
@@ -55,17 +52,38 @@ class CieloLioRemoto
             return $e->getMessage();
         } catch (\Exception $e) {
             $response = $e->getMessage();
-            return ['error' => "Falha ao criar pagamento: {$response}"];
+            return ['error' => "Falha ao criar ordem: {$response}"];
         }
     }
 
-    public function cancelarPedido(string $id)
+
+    public function buscarOrdem(string $id)
+    {
+        $options = $this->optionsRequest;
+        try {
+            $response = $this->client->request(
+                'GET',
+                "/order-management/v1/orders/{$id}",
+                $options
+            );
+            $statusCode = $response->getStatusCode();
+            $result = json_decode($response->getBody()->getContents());
+            return array('status' => $statusCode, 'response' => $result);
+        } catch (ClientException $e) {
+            return $e->getMessage();
+        } catch (\Exception $e) {
+            $response = $e->getMessage();
+            return ['error' => "Falha ao buscar ordem: {$response}"];
+        }
+    }
+
+    public function cancelarOrdem(string $id)
     {
         $options = $this->optionsRequest;
         try {
             $response = $this->client->request(
                 'DELETE',
-                "/orders/{$id}",
+                "/order-management/v1/orders/{$id}",
                 $options
             );
             $statusCode = $response->getStatusCode();
@@ -75,42 +93,24 @@ class CieloLioRemoto
             return $e->getMessage();
         } catch (\Exception $e) {
             $response = $e->getMessage();
-            return ['error' => "Falha ao cancelar intenção de pagamento: {$response}"];
+            return ['error' => "Falha ao cancelar ordem: {$response}"];
         }
     }
 
-    public function buscarPedido(string $id)
+    public function listarOrdem($filters)
     {
         $options = $this->optionsRequest;
+        $options['query'] = $filters;
         try {
             $response = $this->client->request(
                 'GET',
-                "/orders/{$id}",
-                $options
-            );
-            $statusCode = $response->getStatusCode();
-            $result = json_decode($response->getBody()->getContents());
-            return array('status' => $statusCode, 'response' => $result);
-        } catch (ClientException $e) {
-            return $e->getMessage();
-        } catch (\Exception $e) {
-            $response = $e->getMessage();
-            return ['error' => "Falha ao buscar intenção de pagamento: {$response}"];
-        }
-    }
-
-    public function listarPedidos()
-    {
-        $options = $this->optionsRequest;
-        try {
-            $response = $this->client->request(
-                'GET',
-                "/orders",
+                "/order-management/v1/orders",
                 $options
             );
 
             $statusCode = $response->getStatusCode();
             $result = json_decode($response->getBody()->getContents());
+            // return $statusCode;
             return array('status' => $statusCode, 'response' => $result);
         } catch (ClientException $e) {
             return $e->getMessage();
