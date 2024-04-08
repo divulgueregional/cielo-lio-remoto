@@ -34,7 +34,7 @@ composer update
 <b>Ou pela última tag: </b>
 
 ```php
-composer update divulgueregional/cielo-lio-remoto 1.0.0
+composer update divulgueregional/cielo-lio-remoto 1.0.1
 ```
 
 <hr>
