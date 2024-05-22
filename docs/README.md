@@ -27,5 +27,5 @@ Ligue a máquina
   - Descrição Detalhada: Integração com a maquina smart cielo no PDV online<br>
   - Número do Estabelecimento Comercial: Número do EC<br>
   - URL de Callback: https://dominio.com.br/integracao/cielo/webhook/webhook_cielo.php<br>
-  - Nome PDV: DRSystema Pedro<br>
+  - Nome PDV: PDV Pedro<br>
     <br>
