@@ -19,10 +19,10 @@ Ligue a máquina
 - Clique em SOBRE<br>
 - Pegar o Número do EC<br>
 - Abra um chamado em "Suporte" - https://desenvolvedores.cielo.com.br/api-portal/pt-br<br>
-- Cielo Lio <br>
-- envie sua pergunta: <br>
-  -Escolha o tipo de solicitação abaixo:<br>
-  Token integração remota<br>
+  - Clique em Cielo Lio <br>
+  - Clique em envie sua pergunta: <br>
+    -Escolha o tipo de solicitação abaixo:<br>
+    Token integração remota<br>
   - Assunto: Integração com a maquina smart cielo<br>
   - Descrição Detalhada: Integração com a maquina smart cielo no PDV online<br>
   - Número do Estabelecimento Comercial: Número do EC<br>
